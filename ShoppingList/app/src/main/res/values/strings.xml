@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">ShoppingList</string>
+    <string name="add_btn">+</string>
+    <string name="tv_name">name</string>
+    <string name="tv_count">1</string>
+    <string name="scrol_v">scroll</string>
 </resources>
