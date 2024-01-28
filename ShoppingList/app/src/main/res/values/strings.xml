@@ -4,4 +4,12 @@
     <string name="tv_name">name</string>
     <string name="tv_count">1</string>
     <string name="scrol_v">scroll</string>
+
+
+    <string name="edit_name">Name:</string>
+    <string name="edit_count">Count:</string>
+    <string name="error_name">invalid name</string>
+    <string name="error_count">invalid count</string>
+    <string name="press_add_btn">Add</string>
+
 </resources>

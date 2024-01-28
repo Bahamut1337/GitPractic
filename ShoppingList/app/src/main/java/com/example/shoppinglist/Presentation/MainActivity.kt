@@ -2,15 +2,9 @@ package com.example.shoppinglist.Presentation
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.widget.TextView
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
-import com.example.shoppinglist.Domain.ShopItem
-import com.example.shoppinglist.R
 import com.example.shoppinglist.databinding.ActivityMainBinding
 
 
@@ -29,6 +23,10 @@ class MainActivity : AppCompatActivity() {
             shopListAdapter.submitList(it)
         }
 
+        binding.addBtnShopItem.setOnClickListener {
+            val intent = ShopItemActivity.newIntentAdd(this)
+            startActivity(intent)
+        }
     }
 
     private fun setupRecyclerView() = with(binding) {
@@ -72,7 +70,8 @@ class MainActivity : AppCompatActivity() {
 
     private fun setupClickListener() {
         shopListAdapter.onShopItemClickListener = {
-            Log.d("MyLogT", it.toString())
+            val intent = ShopItemActivity.newIntentChange(this, it.id)
+            startActivity(intent)
         }
     }
 
