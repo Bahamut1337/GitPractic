@@ -2,13 +2,16 @@ package com.example.shoppinglist.Presentation
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
+import com.example.shoppinglist.R
 import com.example.shoppinglist.databinding.ActivityMainBinding
 
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), ShopItemFragment.OnEditFinishListener {
 
     private lateinit var viewModel: MainViewModel
     private lateinit var binding: ActivityMainBinding
@@ -24,9 +27,31 @@ class MainActivity : AppCompatActivity() {
         }
 
         binding.addBtnShopItem.setOnClickListener {
+            if(orientation()){
             val intent = ShopItemActivity.newIntentAdd(this)
             startActivity(intent)
+            }else{
+                launchFragment(ShopItemFragment.newInstanceAddItem())
+            }
         }
+    }
+
+    override fun onEditFinish() {
+        Toast.makeText(this@MainActivity,"Success",Toast.LENGTH_SHORT).show()
+        supportFragmentManager.popBackStack()
+    }
+
+    private fun orientation() : Boolean{
+        return binding.shopItemContainer == null
+    }
+
+    private fun launchFragment(fragment: Fragment) {
+        supportFragmentManager.popBackStack()
+        supportFragmentManager
+            .beginTransaction()
+            .replace(R.id.shop_item_container,fragment)
+            .addToBackStack(null)
+            .commit()
     }
 
     private fun setupRecyclerView() = with(binding) {
@@ -70,8 +95,12 @@ class MainActivity : AppCompatActivity() {
 
     private fun setupClickListener() {
         shopListAdapter.onShopItemClickListener = {
+            if(orientation()){
             val intent = ShopItemActivity.newIntentChange(this, it.id)
             startActivity(intent)
+            }else{
+                launchFragment(ShopItemFragment.newInstanceChangeItem(it.id))
+            }
         }
     }
 

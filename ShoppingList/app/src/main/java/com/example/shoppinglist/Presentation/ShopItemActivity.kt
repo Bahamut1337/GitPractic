@@ -6,15 +6,15 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import com.example.shoppinglist.Domain.ShopItem
 import com.example.shoppinglist.R
 import com.example.shoppinglist.databinding.ActivityShopItemBinding
 
-class ShopItemActivity : AppCompatActivity() {
+class ShopItemActivity : AppCompatActivity(), ShopItemFragment.OnEditFinishListener {
 
-    lateinit var binding: ActivityShopItemBinding
-    lateinit var viewModel: ShopItemViewModel
+   lateinit var binding: ActivityShopItemBinding
     var shopItemId = ShopItem.UNDEFINED_ID
     var screenMode = MODE_UNKNOW
 
@@ -24,13 +24,9 @@ class ShopItemActivity : AppCompatActivity() {
         binding = ActivityShopItemBinding.inflate(layoutInflater)
         setContentView(binding.root)
         pareseIntent()
-        viewModel = ViewModelProvider(this).get(ShopItemViewModel::class.java)
-
-        addTextChangeListeners()
-        launchRightMode()
-        observeViewModel()
-
-
+        if(savedInstanceState == null){
+            launchRightMode()
+        }
     }
 
     private fun pareseIntent(){
@@ -41,7 +37,7 @@ class ShopItemActivity : AppCompatActivity() {
         if(mode != MODE_CHANGE && mode != MODE_ADD){
             throw RuntimeException("pizda2")
         }
-        screenMode = mode
+       screenMode = mode
         if(screenMode == MODE_CHANGE){
             if(!intent.hasExtra(EXTRA_SHOP_ITEM_ID)){
                 throw RuntimeException("pizda3")
@@ -49,85 +45,21 @@ class ShopItemActivity : AppCompatActivity() {
             shopItemId = intent.getIntExtra(EXTRA_SHOP_ITEM_ID,-1)
         }
     }
-    private fun observeViewModel(){
-        viewModel.errorInputName.observe(this){
-            val message =if(it){
-                getString(R.string.error_name)
-            }else{
-                null
-            }
 
-            binding.textInputLayoutNAME.error = message
-        }
-        viewModel.errorInputCount.observe(this){
-            val message =if(it){
-                getString(R.string.error_count)
-            }else{
-                null
-            }
-
-            binding.textInputLayoutCOUNT.error = message
-        }
-        viewModel.shouldCloseScreen.observe(this){
-            finish()
-        }
-    }
 
     private fun launchRightMode(){
-        when(screenMode){
-            MODE_CHANGE ->launchChangeForm()
-            MODE_ADD ->launchAddForm()
+        val fragment = when(screenMode){
+            MODE_CHANGE ->ShopItemFragment.newInstanceChangeItem(shopItemId)
+            MODE_ADD ->ShopItemFragment.newInstanceAddItem()
+            else -> throw RuntimeException("popa!")
         }
+        supportFragmentManager.beginTransaction().replace(R.id.Shop_item_container,fragment).commit()
     }
 
-    private fun addTextChangeListeners(){
-        binding.editName.addTextChangedListener(object : TextWatcher{
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-
-            }
-
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                viewModel.resetErrorInputName()
-            }
-
-            override fun afterTextChanged(s: Editable?) {
-
-            }
-        })
-
-        binding.editCount.addTextChangedListener(object : TextWatcher{
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-
-            }
-
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                viewModel.resetErrorInputCount()
-            }
-
-            override fun afterTextChanged(s: Editable?) {
-
-            }
-        })
+    override fun onEditFinish() {
+        Toast.makeText(this@ShopItemActivity,"Success", Toast.LENGTH_SHORT).show()
+        onBackPressedDispatcher.onBackPressed()
     }
-
-    private fun launchChangeForm() {
-        viewModel.getShopItem(shopItemId)
-        viewModel.shopItem.observe(this){
-            binding.editName.setText(it.name)
-            binding.editCount.setText(it.count.toString())
-        }
-        binding.addBtn.setOnClickListener {
-            viewModel.changeShopItem(binding.editName.text?.toString(),binding.editCount.text?.toString())
-        }
-    }
-
-    private fun launchAddForm(){
-        binding.addBtn.setOnClickListener {
-            viewModel.addShopItem(binding.editName.text?.toString(), binding.editCount.text?.toString())
-        }
-
-    }
-
 
     companion object{
 
