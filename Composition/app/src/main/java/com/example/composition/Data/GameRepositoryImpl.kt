@@ -16,7 +16,7 @@ object GameRepositoryImpl : GameRepository {
 
     override fun generateQuestion(maxSumValue: Int, countOfOptions: Int): Question {
         val sum = Random.nextInt(MIN_SUM_VALUE,maxSumValue+1)
-        val visibleNumbers = Random.nextInt(MIN_ANSWER_VALUE,sum-1)
+        val visibleNumbers = Random.nextInt(MIN_ANSWER_VALUE,sum)
         val option = HashSet<Int>()
         val rightAnswer = sum-visibleNumbers
         option.add(rightAnswer)
