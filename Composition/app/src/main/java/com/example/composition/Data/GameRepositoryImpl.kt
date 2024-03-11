@@ -1,10 +1,9 @@
 package com.example.composition.Data
 
-import android.graphics.BitmapFactory.Options
-import com.example.composition.Domain.Entity.GameSettings
-import com.example.composition.Domain.Entity.Level
-import com.example.composition.Domain.Entity.Question
-import com.example.composition.Domain.Repository.GameRepository
+import com.example.composition.domain.entity.GameSettings
+import com.example.composition.domain.entity.Level
+import com.example.composition.domain.entity.Question
+import com.example.composition.domain.Repository.GameRepository
 import kotlin.math.max
 import kotlin.math.min
 import kotlin.random.Random

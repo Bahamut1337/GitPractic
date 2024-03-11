@@ -3,9 +3,13 @@ package com.example.shoppinglist.Presentation
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.databinding.DataBindingUtil
+import androidx.databinding.ViewDataBinding
 import androidx.recyclerview.widget.ListAdapter
 import com.example.shoppinglist.Domain.ShopItem
 import com.example.shoppinglist.R
+import com.example.shoppinglist.databinding.ItemDisabledBinding
+import com.example.shoppinglist.databinding.ItemEnabledBinding
 
 class ShopListAdapter : ListAdapter<ShopItem,ShopItemViewHolder>(ShopItemDiffCallback()) {
 
@@ -25,19 +29,32 @@ class ShopListAdapter : ListAdapter<ShopItem,ShopItemViewHolder>(ShopItemDiffCal
             layout,
             parent, false
         )
-        return ShopItemViewHolder(view)
+
+        val binding = DataBindingUtil.inflate<ViewDataBinding>(LayoutInflater.from(parent.context),layout,parent,false)
+        return ShopItemViewHolder(binding)
     }
 
 
     override fun onBindViewHolder(viewHolder: ShopItemViewHolder, position: Int) {
         val shopItem = getItem(position)
-        viewHolder.name.text = shopItem.name
-        viewHolder.count.text = shopItem.count.toString()
-        viewHolder.view.setOnLongClickListener {
+        val binding = viewHolder.binding
+
+        when(binding){
+            is ItemDisabledBinding -> {
+                binding.name.text = shopItem.name
+                binding.count.text = shopItem.count.toString()
+            }
+            is ItemEnabledBinding -> {
+                binding.name.text = shopItem.name
+                binding.count.text = shopItem.count.toString()
+            }
+        }
+
+        binding.root.setOnLongClickListener {
             onShopItemLongClickListener?.invoke(shopItem)
             true
         }
-        viewHolder.view.setOnClickListener{
+        binding.root.setOnClickListener{
             onShopItemClickListener?.invoke(shopItem)
         }
     /*    if(!shopItem.enabled){

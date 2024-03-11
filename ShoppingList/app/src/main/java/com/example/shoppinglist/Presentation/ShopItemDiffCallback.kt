@@ -11,8 +11,4 @@ class ShopItemDiffCallback : DiffUtil.ItemCallback<ShopItem>() {
     override fun areContentsTheSame(oldItem: ShopItem, newItem: ShopItem): Boolean {
         return oldItem == newItem
     }
-
-    override fun getChangePayload(oldItem: ShopItem, newItem: ShopItem): Any? {
-        return super.getChangePayload(oldItem, newItem)
-    }
 }

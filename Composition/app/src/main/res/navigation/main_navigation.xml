@@ -6,7 +6,7 @@
     app:startDestination="@id/welcomeFragment">
     <fragment
         android:id="@+id/welcomeFragment"
-        android:name="com.example.composition.Presentation.WelcomeFragment"
+        android:name="com.example.composition.presentation.WelcomeFragment"
         android:label="fragment_welcome"
         tools:layout="@layout/fragment_welcome" >
         <action
@@ -16,7 +16,7 @@
 
     <fragment
         android:id="@+id/chooseLevelFragment"
-        android:name="com.example.composition.Presentation.ChooseLevelFragment"
+        android:name="com.example.composition.presentation.ChooseLevelFragment"
         android:label="fragment_choose_level"
         tools:layout="@layout/fragment_choose_level" >
         <action
@@ -26,7 +26,7 @@
 
     <fragment
         android:id="@+id/gameFragment"
-        android:name="com.example.composition.Presentation.GameFragment"
+        android:name="com.example.composition.presentation.GameFragment"
         android:label="fragment_game"
         tools:layout="@layout/fragment_game" >
         <action
@@ -36,16 +36,16 @@
             app:popUpToInclusive="true" />
         <argument
             android:name="level"
-            app:argType="com.example.composition.Domain.Entity.Level" />
+            app:argType="com.example.composition.domain.entity.Level" />
     </fragment>
 
     <fragment
         android:id="@+id/gameFinishedFragment"
-        android:name="com.example.composition.Presentation.GameFinishedFragment"
+        android:name="com.example.composition.presentation.GameFinishedFragment"
         android:label="fragment_game_finished"
         tools:layout="@layout/fragment_game_finished" >
         <argument
             android:name="gameResult"
-            app:argType="com.example.composition.Domain.Entity.GameResult" />
+            app:argType="com.example.composition.domain.entity.GameResult" />
     </fragment>
 </navigation>
